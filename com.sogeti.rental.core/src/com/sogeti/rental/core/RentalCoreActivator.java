@@ -8,6 +8,10 @@ import com.opcoach.training.rental.helpers.RentalAgencyGenerator;
 
 public class RentalCoreActivator implements BundleActivator {
 
+	public static RentalAgency getAgency() {
+		return agency;
+	}
+
 	private static RentalAgency agency = RentalAgencyGenerator.createSampleAgency();
 	
 
