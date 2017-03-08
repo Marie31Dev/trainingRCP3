@@ -122,7 +122,7 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 		
 		// Noeud courant = CUSTOMER
 		else if (element instanceof Customer)
-			return Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_YELLOW);
 		
 		// Noeud courant = OBJETS LOUES
 		else if (element instanceof RentalObject)
