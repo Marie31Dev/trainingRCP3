@@ -2,6 +2,9 @@ package com.sogeti.rental.ui.views;
 
 import java.util.Collection;
 
+import org.eclipse.jface.resource.ColorRegistry;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -79,14 +82,15 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 		// Noeud courant = OBJETS LOUES
 		else if (element instanceof RentalObject)
 			return ((RentalObject) element).getName().toString();
-		
-		//Pas besoin de le faire pour les objets Rental car la méthode toString est déjà surchargée dans la classe Rental 
-		
+
+		// Pas besoin de le faire pour les objets Rental car la méthode toString
+		// est déjà surchargée dans la classe Rental
+
 		return super.getText(element);
 	}
-	
+
 	// ----------------------------------------
-	// METHODE DU  dont on hérite
+	// METHODE DU dont on hérite
 	// ----------------------------------------
 	@Override
 	public Image getImage(Object element) {
@@ -100,14 +104,14 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 			return RentalUIActivator.getDefault().getImageRegistry().get(IMG_CUSTOMER);
 
 		// Noeud courant = OBJETS LOUES
-		else if (element instanceof RentalObject)		
-			return RentalUIActivator.getDefault().getImageRegistry().get(IMG_OBJECT);		
+		else if (element instanceof RentalObject)
+			return RentalUIActivator.getDefault().getImageRegistry().get(IMG_OBJECT);
 
 		// Noeud courant = LOCATIONS
 		else if (element instanceof Rental)
 			return RentalUIActivator.getDefault().getImageRegistry().get(IMG_RENTAL);
-			
-			return super.getImage(element);
+
+		return super.getImage(element);
 	}
 
 	// -------------------------------------------------------
@@ -115,22 +119,34 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 	// -------------------------------------------------------
 	@Override
 	public Color getForeground(Object element) {
-		
+		// Personnalisation de la couleur de la fonte
+
 		// Noeud courant = AGENCE (racine)
 		if (element instanceof RentalAgency)
 			return Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
-		
+
 		// Noeud courant = CUSTOMER
 		else if (element instanceof Customer)
-			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_YELLOW);
-		
+			// Exo 40
+			// return
+			// Display.getCurrent().getSystemColor(SWT.COLOR_DARK_YELLOW);
+			// Exo 80 : utilisation de la couleur de préférence
+			return getAColor(RentalUIActivator.getDefault().getPreferenceStore().getString(PREF_CLRCUSTOMER));
+
 		// Noeud courant = OBJETS LOUES
 		else if (element instanceof RentalObject)
-			return Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
-		
+			// Exo 40
+			// return Display.getCurrent().getSystemColor(SWT.COLOR_BLUE);
+			// Exo 80 : utilisation de la couleur de préférence
+			return getAColor(RentalUIActivator.getDefault().getPreferenceStore().getString(PREF_CLROBJECT));
+
 		// Noeud courant = LOCATIONS
 		else if (element instanceof Rental)
-			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA);
+			// Exo 40
+			// return
+			// Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA);
+			// Exo 80 : utilisation de la couleur de préférence
+			return getAColor(RentalUIActivator.getDefault().getPreferenceStore().getString(PREF_CLRRENTAL));
 		return null;
 	}
 
@@ -139,7 +155,25 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	// Conversion d'une chaine en couleur
+	private Color getAColor(String rgbKey) {
+		ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
+
+		Color col = colorRegistry.get(rgbKey);
+		if (col == null) {
+			colorRegistry.put(rgbKey, StringConverter.asRGB(rgbKey));
+			col = colorRegistry.get(rgbKey);
+		}
+		return col;
+	}
+
 }
+
+
+// -----------
+// CLASSE NODE
+//------------
 
 // Creation d'un noeud logique
 class Node {
@@ -177,5 +211,37 @@ class Node {
 	public String toString() {
 		return label;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((agency == null) ? 0 : agency.hashCode());
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Node other = (Node) obj;
+		if (agency == null) {
+			if (other.agency != null)
+				return false;
+		} else if (!agency.equals(other.agency))
+			return false;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		return true;
+	}
+	
 
 }
