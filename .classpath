@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="com.sogeti.rental.core/src"/>
+	<classpathentry kind="src" path="com.sogeti.rental.rcp/src"/>
+	<classpathentry kind="src" path="com.sogeti.rental.ui.cmd/src"/>
+	<classpathentry kind="src" path="com.sogeti.rental.ui/src"/>
+	<classpathentry kind="src" path="com.sogeti.sample/src"/>
+	<classpathentry kind="lib" path="com.sogeti.rental.core/rental.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="com.sogeti.rental.core/bin"/>
+</classpath>
