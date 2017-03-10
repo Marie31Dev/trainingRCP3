@@ -1,9 +1,12 @@
-package com.sogeti.rental.ui;
+package com.sogeti.rental.ui.preferences;
 
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import com.sogeti.rental.ui.RentalUIActivator;
+import com.sogeti.rental.ui.RentalUIConstants;
 
 public class RentalPreferences extends FieldEditorPreferencePage implements IWorkbenchPreferencePage,RentalUIConstants {
 
@@ -11,7 +14,6 @@ public class RentalPreferences extends FieldEditorPreferencePage implements IWor
 	public RentalPreferences() {
 		super(GRID);
 		setPreferenceStore(RentalUIActivator.getDefault().getPreferenceStore());
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -21,8 +23,7 @@ public class RentalPreferences extends FieldEditorPreferencePage implements IWor
 	}
 
 	@Override
-	protected void createFieldEditors() {
-		
+	protected void createFieldEditors() {	
 		// Ajout des widgets des preferences
 		
 		// Ajout du widget couleur du customer

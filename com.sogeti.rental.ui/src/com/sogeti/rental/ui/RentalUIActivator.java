@@ -1,10 +1,15 @@
 package com.sogeti.rental.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -24,6 +29,8 @@ public class RentalUIActivator extends AbstractUIPlugin implements RentalUIConst
 	// The shared instance
 	private static RentalUIActivator plugin;
 
+	private  Map<String, Palette> paletteManager = new HashMap<>();
+
 	/**
 	 * The constructor
 	 */
@@ -41,6 +48,7 @@ public class RentalUIActivator extends AbstractUIPlugin implements RentalUIConst
 		plugin = this;
 
 		readVueExtension();
+		readPalette();
 	}
 
 	private void readVueExtension() {
@@ -49,8 +57,35 @@ public class RentalUIActivator extends AbstractUIPlugin implements RentalUIConst
 		for (IConfigurationElement e : reg.getConfigurationElementsFor("org.eclipse.ui.views")) {
 			// On ne veut pas les element "category" et "stickyView"
 			if (e.getName().equals("view"))
-				// Affiche la liste de view avec leur nom et le nom du plugin auquel la vue appartient
+				// Affiche la liste de view avec leur nom et le nom du plugin
+				// auquel la vue appartient
 				System.out.println(e.getName() + " " + e.getAttribute("name") + " " + e.getNamespaceIdentifier());
+		}
+	}
+
+	private void readPalette() {
+		// Read all configurations
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		// On lit chaque element du plugin "com.sogeti.rental.ui.palette" : il n'y a que des palettes. On en a 2.
+		for (IConfigurationElement e : reg.getConfigurationElementsFor("com.sogeti.rental.ui.palette")) {
+			// Dans la map, on stocke chaque palette créée dans les extensions
+			try {
+				// Création de la palette
+				Palette p = new Palette();
+				p.setId(e.getAttribute("id"));
+				p.setName(e.getAttribute("name"));
+				//Création du colorProvider 
+				IColorProvider pr = (IColorProvider) e.createExecutableExtension("paletteClass");
+				p.setProvider(pr);
+				paletteManager.put(p.getId(), p);
+			} catch (CoreException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			// Affiche la liste de view avec leur nom et le nom du plugin auquel
+			// la vue appartient
+			System.out.println(e.getName() + " " + e.getAttribute("name") + " " + e.getNamespaceIdentifier());
 		}
 	}
 
@@ -92,6 +127,11 @@ public class RentalUIActivator extends AbstractUIPlugin implements RentalUIConst
 		reg.put(IMG_RENTAL, ImageDescriptor.createFromURL(b.getEntry(IMG_RENTAL)));
 		reg.put(IMG_OBJECT, ImageDescriptor.createFromURL(b.getEntry(IMG_OBJECT)));
 		reg.put(IMG_CUSTOMER, ImageDescriptor.createFromURL(b.getEntry(IMG_CUSTOMER)));
+	}
+
+	public  Map<String, Palette> getPaletteManager() {
+		// TODO Auto-generated method stub
+		return paletteManager;
 	}
 
 }

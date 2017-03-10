@@ -11,4 +11,8 @@ public interface RentalUIConstants {
 	public static final String PREF_CLRCUSTOMER = "ClrCustomer";
 	public static final String PREF_CLRRENTAL = "ClrRental";
 	public static final String PREF_CLROBJECT = "ClrObject";
+	
+	// Préférence de la palette sélectionnée 
+	public static final String PREF_PALETTE = "palettepref";
+
 }
