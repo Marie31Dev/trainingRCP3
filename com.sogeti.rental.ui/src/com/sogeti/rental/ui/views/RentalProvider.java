@@ -123,7 +123,7 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 		// Aiguillage
 		String palID = RentalUIActivator.getDefault().getPreferenceStore().getString(PREF_PALETTE);
 		Palette p = RentalUIActivator.getDefault().getPaletteManager().get(palID);
-		return p.getProvider().getForeground(element);
+		return p == null ? null : p.getProvider().getForeground(element);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class RentalProvider extends LabelProvider implements ITreeContentProvide
 		// Aiguillage
 		String palID = RentalUIActivator.getDefault().getPreferenceStore().getString(PREF_PALETTE);
 		Palette p = RentalUIActivator.getDefault().getPaletteManager().get(palID);
-		return p.getProvider().getBackground(element);
+		return p == null ? null : p.getProvider().getBackground(element);
 	}
 
 	// Conversion d'une chaine en couleur

@@ -4,6 +4,9 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 public class AgencyPerspective implements IPerspectiveFactory {
+	
+	// Ajout d'une constante contenant l'ID de la perspective
+	public static final String PERSPECTIVE_ID = "com.sogeti.rental.ui.perspectiveAgency"; //$NON-NLS-1$
 
 	/**
 	 * Creates the initial layout for a page.
